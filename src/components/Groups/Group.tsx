@@ -24,19 +24,19 @@ function Group(props: GroupProps) {
                     <span>{group.cards.length || 0}</span>
                 </p>
             </div>
-        </div>
-        <div className="group-cards">
-            {group.cards.map((item) => (
-                <Card 
-                  key={item.id}
-                  card={item}
-                  groupId = {group.id}
-                  removeCard = {removeCard}
-                  updateCard = {updateCard}
-                />
-            ))}
-            <CustomInput />
-        </div>        
+            <div className="group-cards">
+                {group.cards.map((item) => (
+                    <Card 
+                    key={item.id}
+                    card={item}
+                    groupId = {group.id}
+                    removeCard = {removeCard}
+                    updateCard = {updateCard}
+                    />
+                ))}
+                <CustomInput />
+            </div>
+        </div>   
     )
 }
 
