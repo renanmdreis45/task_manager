@@ -2,7 +2,7 @@ export interface ICard {
     id: number;
     desc: string;
     prazo: string;
-    status: string;
+    state: string;
 }
 
 export interface IGroup {

@@ -16,7 +16,7 @@ interface CardProps {
 
 function Card(props: CardProps) {
     const {card, groupId, removeCard, updateCard} = props;
-    const {id, desc, prazo, status} = card;
+    const {id, desc, prazo, state} = card;
     const [showDropdown, setShowDropdown] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
