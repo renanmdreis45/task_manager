@@ -44,7 +44,7 @@ function CardInfo(props: CardioInfoProps) {
             <div className="card-info-box">
                 <div className="card-info-box-title">
                   <p> Description</p>
-                </div>
+                </div> 
             </div>
         </div>
     );
