@@ -14,7 +14,7 @@ export class GroupController {
             return res.status(201).json(newGroup);
         } catch(error) {
             console.log(error)
-            return res.status(500).json({message: 'Internal Serve Error'})
+            return res.status(500).json({message: 'Erro ao criar grupo'})
         }
     }
 
@@ -55,7 +55,7 @@ export class GroupController {
             return res.status(404).json({message: 'Grupo não existe'})
           }
 
-          await groupRepository.delete({id: Number(idGroup)})
+          await groupRepository.delete(group)
 
           return res.status(201).json({message: 'Grupo deletado com sucesso'})
         } catch(error) {
@@ -69,9 +69,18 @@ export class GroupController {
         const titleGroup = req.body;
         const idGroup = req.params.id;
         
-        await groupRepository.findOneBy({id: Number(idGroup)});
         try {
+            const group = await groupRepository.findOneBy({id: Number(idGroup)});
 
+            if(!group) {
+                return res.status(404).json({message: 'Grupo não existe'})
+            }
+
+            group.title = titleGroup ? titleGroup : group.title; 
+
+            await groupRepository.save(group);
+
+            return res.status(201).json({message: 'Grupo atualizado com sucesso'})
         } catch(error) {
             console.log(error)
             return res.status(500).json({message: 'Erro ao atualizar grupo'})
