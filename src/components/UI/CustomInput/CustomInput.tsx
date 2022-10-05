@@ -4,11 +4,11 @@ import { X } from "react-feather";
 interface CustomInputProps {
     text: string;
     onSubmit: (value: string) => void;
-    displayClass: string;
-    editClass: string;
-    placeholder: string;
-    defaultValue: string;
-    buttonText: string;
+    displayClass?: string;
+    editClass?: string;
+    placeholder?: string;
+    defaultValue?: string;
+    buttonText?: string;
 }
 
 function CustomInput(props: CustomInputProps) {

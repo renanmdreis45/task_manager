@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { ExitStatus } from 'typescript';
 import { ICard , IGroup} from '../../interfaces/interface';
 import Card from "../Cards/Card";
+import CustomInput from '../UI/CustomInput/CustomInput';
 
 
 export interface GroupProps {
@@ -34,10 +35,17 @@ function Group(props: GroupProps) {
                     updateCard = {updateCard}
                     />
                 ))}
-                <CustomInput />
+                <CustomInput
+                    text = "+ Adicionar cartão"
+                    placeholder = 'Coloque a descrição do cartão'
+                    displayClass='group-add-class'
+                    editClass='groupa-add-class-edit'
+                    onSubmit={(value: string) => addCard(group.id, value)}
+                />
             </div>
         </div>   
     )
 }
 
 export default Group;
+ 

@@ -10,7 +10,7 @@ interface CardProps {
   card: ICard;
   groupId: number;
   removeCard: (groupID: number, cardId: number) => void;
-  updateCard: (groupID: number, cardId: number) => void;
+  updateCard: (groupID: number, cardId: number, card: ICard) => void;
 
 }
 
@@ -23,7 +23,12 @@ function Card(props: CardProps) {
     return (
         <>
             {showModal && 
-                <CardInfo />
+                <CardInfo
+                    onClose = {() => setShowModal(false)}
+                    card = {card}
+                    groupId = {groupId}
+                    updateCard={updateCard}
+                />
             }
 
             <div
@@ -45,8 +50,7 @@ function Card(props: CardProps) {
                           class="group-dropdown"
                           onClose={() => setShowDropdown(false)}
                         >
-                            <p onClick={() => updateCard(groupId, id)}> Editar Card </p>
-                            <p onClick={() => removeCard(groupId, id)}> Remover Card </p>
+                          <p onClick={() => removeCard(groupId, id)}> Remover Card </p>
                         </Dropdown>
                     )}
                 </div>
