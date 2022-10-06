@@ -18,32 +18,6 @@ export class GroupController {
         }
     }
 
-    async createTask(req: Request, res: Response) {
-        const {desc, state, prazo} = req.body;
-        const idTask = req.params;
-
-        try {
-            const group = await groupRepository.findOneBy({id: Number(idTask)})
-
-            if(!group) {
-                return res.status(404).json({message: 'Grupo não existe'});
-            }
-
-            const newTask = taskRepository.create({
-                desc,
-                state,
-                prazo,
-            })
-
-            await taskRepository.save(newTask)
-
-            return res.status(201).json(newTask)
-        } catch (error) {
-            console.log(error)
-            return res.status(500).json({message: 'Erro ao criar nova task'})
-        }
-    }
-
     async deleteGroup(req: Request, res: Response) {
         
         const idGroup = req.params.id

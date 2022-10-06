@@ -1,6 +1,6 @@
 import express from 'express'
 import { AppDataSource } from './data-source';
-import routes from './routes';
+import routes from './routes/routes';
 
 AppDataSource.initialize().then(() => {
     const app = express()
