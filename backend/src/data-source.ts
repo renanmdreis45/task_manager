@@ -1,10 +1,12 @@
 import 'reflect-metadata'
 import 'dotenv/config'
+import {Group} from './entities/group';
+import {Task} from './entities/tasks';
 import { DataSource } from 'typeorm'
 
 const port = process.env.DB_PORT as number | undefined
 
-export const AppDataSource = new DataSource({
+const AppDataSource = new DataSource({
     type: 'postgres',
     host: process.env.DB_HOST,
     port: port,
@@ -13,4 +15,16 @@ export const AppDataSource = new DataSource({
     database: process.env.DB_NAME,
     entities: [`${__dirname}/**/entities/*.{ts,js}`],
     migrations: [`${__dirname}/**/migrations/*.{ts,js}`],
+    synchronize: true,
 })
+
+AppDataSource.initialize()
+    .then(() => {
+        console.log("Data Source inicializado")
+    })
+    .catch((err) => {
+        console.error("Error ao inicializar", err)
+    })
+
+
+export default AppDataSource;

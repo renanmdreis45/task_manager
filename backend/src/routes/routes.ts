@@ -1,12 +1,12 @@
 import {Router} from 'express'
 import { GroupController } from '../controllers/GroupController';
 import { TaskController } from '../controllers/TaskController';
-import { Group } from '../entities/group';
+
 
 const routes = Router()
 
 routes.post('/groups', new GroupController().createGroup);
-routes.post('/tasks', new TaskController().createTask);
+routes.post('/groups/:id/tasks', new TaskController().createTask);
 
 routes.get('/groups', new GroupController().getGroups);
 routes.get('/tasks', new TaskController().getTasks);

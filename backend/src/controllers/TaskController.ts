@@ -1,4 +1,5 @@
-;import {Request, Response} from 'express'
+;import { group } from 'console';
+import {Request, Response} from 'express'
 import { Delete } from 'react-feather';
 import { Repository } from 'typeorm';
 import { groupRepository } from '../repositories/groupRepository'
@@ -9,7 +10,11 @@ export class TaskController {
     async getTasks(req: Request, res: Response) {
         
         try {
-            const tasks = await taskRepository.find();
+            const tasks = await taskRepository.find({
+                relations: {
+                    group: true,
+                },
+           });
             return res.json(tasks);
         } catch(error) {
             return res.status(500).json({message: "Erro ao carregar as tarefas"});
@@ -22,7 +27,7 @@ export class TaskController {
         const {idTask} = req.params;
 
         try {
-            const task = await taskRepository.findOneBy({id: Number(idTask)});
+            const task = await taskRepository.findOneBy({id: idTask});
 
             if(!task) {
                 return res.status(404).json({message: "Tarefa não encontrada no grupo"})
@@ -36,14 +41,15 @@ export class TaskController {
     }
 
     async createTask(req: Request, res: Response) {
-        const {idGroup, desc, state, prazo} = req.body;
+        const {desc, state, prazo} = req.body;
+        const {idGroup} = req.params;
 
         try {
             
-           const groupTask = await groupRepository.findOneBy({id: Number(idGroup)});
+            const groupTask = await groupRepository.findOneBy({id: idGroup});
 
             if(!groupTask) return res.status(404).json({message:'Grupo inexistente'});
-            
+
             if(!desc || !state || !prazo) {
                 return res.status(404).json({message: 'Parâmetros inválidos ao criar tarefa'});
             }
@@ -52,7 +58,7 @@ export class TaskController {
                 desc,
                 state,
                 prazo,
-                group: idGroup,
+                group: groupTask,
             })
 
             await taskRepository.save(newTask)
@@ -70,17 +76,11 @@ export class TaskController {
 
         try {
 
-            const task = await taskRepository.findOne({
-                where: {
-                    id: Number(idTask),
-                }
-            })
 
-            if(!task) {
-                return res.status(404).json({message: 'Tarefa não existe nesse grupo'})
-            }
+            const del = await taskRepository.delete({id: idTask})
 
-            await groupRepository.delete(task)
+            if (del.affected === 0) return res.status(404).json({ message: "Tarefa não encontrada" });
+
             return res.status(201).json({message: 'Tarefa deletada com sucesso'})
 
         } catch(error) {
@@ -96,7 +96,7 @@ export class TaskController {
         const {descTask, stateTask, prazoTask} = req.body;
         
         try {
-            const task = await taskRepository.findOneBy({id: Number(idTask)})
+            const task = await taskRepository.findOneBy({id: idTask})
 
             if(!task) {
                 return res.status(404).json({message: "Tarefa não existe nesse grupo"})

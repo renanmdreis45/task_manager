@@ -1,8 +1,7 @@
 import express from 'express'
-import { AppDataSource } from './data-source';
 import routes from './routes/routes';
 
-AppDataSource.initialize().then(() => {
+
     const app = express()
     const cors = require('cors');
     app.use(cors());
@@ -11,5 +10,7 @@ AppDataSource.initialize().then(() => {
 
     app.use(routes);
 
-    return app.listen(process.env.PORT)
-})
+    const port = process.env.PORT || 8080;
+
+    app.listen(port, () => console.log(`Listening on port ${port}`));
+

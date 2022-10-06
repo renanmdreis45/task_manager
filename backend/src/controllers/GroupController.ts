@@ -20,18 +20,16 @@ export class GroupController {
 
     async deleteGroup(req: Request, res: Response) {
         
-        const idGroup = req.params.id
+        const {idGroup} = req.params;
 
         try {
-          const group = await groupRepository.findOneBy({id: Number(idGroup)})
 
-          if(!group) {
-            return res.status(404).json({message: 'Grupo não existe'})
-          }
+          const del = await groupRepository.delete({id: idGroup})
 
-          await groupRepository.delete(group)
+          if (del.affected === 0) return res.status(404).json({ message: "Grupo não encontrado" });
 
           return res.status(201).json({message: 'Grupo deletado com sucesso'})
+
         } catch(error) {
             console.log(error)
             return res.status(500).json({message: 'Erro ao deletar o grupo'})
@@ -40,11 +38,11 @@ export class GroupController {
     }
 
     async updateGroup(req: Request, res: Response) {
-        const titleGroup = req.body;
-        const idGroup = req.params.id;
+        const {titleGroup} = req.body;
+        const {idGroup} = req.params;
         
         try {
-            const group = await groupRepository.findOneBy({id: Number(idGroup)});
+            const group = await groupRepository.findOneBy({id: idGroup});
 
             if(!group) {
                 return res.status(404).json({message: 'Grupo não existe'})
@@ -74,6 +72,17 @@ export class GroupController {
             console.log(error)
             return res.status(500).json({message: 'Erro ao carregar os grupos'})
         }
+    }
 
+    async getGroup(req:Request, res: Response){
+
+        const { idGroup } = req.params;
+
+        try {
+            const group = await groupRepository.findOneBy({ id: idGroup })
+            return res.json(group)
+        } catch (error) {
+            return res.status(500).json({ message: "erro interno" });
+        }
     }
 }
