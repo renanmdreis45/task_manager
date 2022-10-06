@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
-import {Group} from "./group" 
+import {Group} from "./group";
 
 
 @Entity({ name: "tasks" })
@@ -19,7 +19,9 @@ export class Task {
   @Column({ name: "created_at" })
   createdAt?: Date;
 
-  @ManyToOne(() => Group, group => group.tasks)
-  @JoinColumn({name: 'group_id'})
+  @ManyToOne(() => Group, group => group.tasks, {
+    eager: true,
+    onDelete: "CASCADE"
+  })
   group: Group
 }
