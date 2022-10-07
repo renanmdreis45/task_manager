@@ -1,12 +1,12 @@
 export interface ICard {
-    id: number;
+    id: string;
     desc: string;
     prazo: string;
     state: string;
 }
 
 export interface IGroup {
-    id: number;
+    id: string;
     title: string;
     cards: ICard[];
 }

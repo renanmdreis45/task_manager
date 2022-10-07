@@ -31,8 +31,8 @@ export function getCard(id: string) {
 
 //PUT
 
-export function updateGroup(id: string, group: any) {
-   return axios.put(`/groups/${id}`, group);
+export function updateGroup(groupId: string, newTitle: string) {
+   return axios.put(`/groups/${groupId}`, newTitle);
 }
 
 export function updateTask(id: string, card: any) {

@@ -1,4 +1,8 @@
 import React, {useEffect, useState} from "react";
+import { 
+    updateTask,
+    deleteTask,
+} from "../../../services/requests";
 import "./CardInfo.css";
 import CustomInput from "../../UI/CustomInput/CustomInput";
 
@@ -8,36 +12,24 @@ import Card from "../Card";
 interface CardioInfoProps {
     onClose: () => void;
     card: ICard;
-    groupId: number;
-    updateCard: (groupId: number, cardId: number, card: ICard) => void;
+    updateCard: (groupId: number, cardId: string, card: ICard) => void;
+    deleteCard: (cardId: string) => void;
 }
 
 function CardInfo(props: CardioInfoProps) {
-    const {onClose, card, groupId, updateCard} = props;
+    const {onClose, card, updateCard, deleteCard} = props;
     const [cardValues, setCardValues] = useState<ICard>({
       ...card,
     });
 
-    const updateDesc = (value: string) => {
-        setCardValues({...card, desc: value})
+    const handleSubmit = (event: any) => {
+        event.preventDefault();
+        
+        const card = {
+            id: 
+        }
     }
 
-    const updateStatus = (status: string) => {
-        setCardValues({...card, state: status})
-    }
-
-    const updatePrazo = (prazo: string) => {
-        if(!prazo) return;
-
-        setCardValues({
-            ...cardValues,
-            prazo,
-        });
-    };
-
-    useEffect(() => {
-        if(updateCard) updateCard(groupId, cardValues.id, cardValues);
-    }, [cardValues])
 
     return (
         <div className="card-info">
