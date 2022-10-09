@@ -8,9 +8,9 @@ import Dropdown from '../UI/Dropdown/Dropdown';
 
 interface CardProps {
   card: ICard;
-  groupId: number;
-  removeCard: (groupID: number, cardId: number) => void;
-  updateCard: (groupID: number, cardId: number, card: ICard) => void;
+  groupId: string;
+  removeCard: (groupID: string, cardId: string) => void;
+  updateCard: (groupID: string, cardId: string, card: ICard) => void;
 
 }
 

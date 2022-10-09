@@ -8,8 +8,8 @@ import Card from "../Card";
 interface CardioInfoProps {
     onClose: () => void;
     card: ICard;
-    groupId: number;
-    updateCard: (groupId: number, cardId: number, card: ICard) => void;
+    groupId: string;
+    updateCard: (groupId: string, cardId: string, card: ICard) => void;
 }
 
 function CardInfo(props: CardioInfoProps) {

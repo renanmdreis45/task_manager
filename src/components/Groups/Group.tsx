@@ -1,15 +1,17 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import { ExitStatus } from 'typescript';
 import { ICard , IGroup} from '../../interfaces/interface';
 import Card from "../Cards/Card";
 import CustomInput from '../UI/CustomInput/CustomInput';
+import { GroupProvider } from '../../context/group/Provider';
+import { GroupContext } from '../../context/group/Context';
 
 
 export interface GroupProps {
   group: IGroup;
-  addCard: (groupId: number, desc: string) => void;
-  removeCard : (groupId: number, cardId: number) => void;
-  updateCard: (groupId: number, cardId: number, card: ICard) => void;
+  addCard: (groupId: string, desc: string) => void;
+  removeCard : (groupId: string, cardId: string) => void;
+  updateCard: (groupId: string, cardId: string, card: ICard) => void;
 }
 
 function Group(props: GroupProps) {
@@ -18,6 +20,7 @@ function Group(props: GroupProps) {
     const [dropDown, setDropDown] = useState(false);
 
     return(
+      <GroupProvider>
         <div className="group">
             <div className="group-header">
                 <p className='group-header-title'>
@@ -43,7 +46,8 @@ function Group(props: GroupProps) {
                     onSubmit={(value: string) => addCard(group.id, value)}
                 />
             </div>
-        </div>   
+        </div>
+      </GroupProvider>
     )
 }
 
