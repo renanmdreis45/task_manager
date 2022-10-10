@@ -5,9 +5,7 @@ export interface ICard {
     state: string;
 }
 
-export interface ICardState {
-    cards: ICard[];
-}
+
 
 export interface IGroup {
     id: string;
@@ -15,6 +13,3 @@ export interface IGroup {
     cards: ICard[];
 }
 
-export interface IGroupState {
-    groups: IGroup[]
-}

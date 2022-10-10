@@ -4,11 +4,11 @@ import "./Dashboard.css";
 import CustomInput from "../../components/UI/CustomInput/CustomInput";
 import { ICard, IGroup, IGroupState } from '../../interfaces/interface'
 import { getGroups } from "../../services/requests";
-import {GroupContext} from "../../context/group/Context";
+
 
 function Dashboard() {
   
-   const [group, setGroup] = useState({});
+   const [group, setGroup] = useState([]);
   
    useEffect(() => {
      getGroups();
@@ -18,11 +18,11 @@ function Dashboard() {
   return (
     <div className="app">
       <div className="app-nav">
-        <h1>Trello Kanban Board</h1>
+        <h1>Task Manager</h1>
       </div>
       <div className="app-boards-container">
         <div className="app-boards">
-          {groups.map((item) => (
+          {group.map((item) => (
             <Group
               key={item.id}
               group={item}
