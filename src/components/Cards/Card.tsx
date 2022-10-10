@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "Card.css";
+import "./Card.css";
 import CardInfo from "../Cards/CardInfo/CardInfo";
 import {Clock} from "react-feather";
 import {formatDate} from "../../util/date"
@@ -54,7 +54,7 @@ function Card(props: CardProps) {
                         </Dropdown>
                     )}
                 </div>
-                <div className="card-status">{status}</div>
+                <div>{state}</div>
                 <div className="card-footer">
                     {prazo && (
                         <p className="card-footer item">

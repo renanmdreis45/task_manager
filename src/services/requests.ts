@@ -1,32 +1,35 @@
 import axios from "axios";
+import { ICard, IGroup } from "../interfaces/interface";
 
-const URL = "http://localhost:8080";
+const api = axios.create({
+   baseURL: "http://localhost:8000",
+ });
 
 //POST
 export function createGroup(group: any) {
-   return axios.post("/groups", group)
+   return api.post("/groups", group)
 }
 
-export function createCard(card: any) {
-   return axios.post("/tasks", card)
+export function createTask(card: any) {
+   return api.post("/tasks", card)
 } 
 
 //GET
 
-export function getGroups() {
-   return axios.get("/groups")
+export function getGroups(): Promise<IGroup[]> {
+   return api.get("/groups")
 }
 
 export function getGroup(id: string) {
-   return axios.get(`/groups/${id}`)
+   return api.get(`/groups/${id}`)
 }
 
-export function getCards() {
-   return axios.get('/tasks')
+export const getCards = () => {
+   return api.get('/tasks')
 }
 
 export function getCard(id: string) {
-   return axios.get(`/tasks/${id}`)
+   return api.get(`/tasks/${id}`)
 }
 
 //PUT
@@ -35,16 +38,16 @@ export function updateGroup(groupId: string, newTitle: string) {
    return axios.put(`/groups/${groupId}`, newTitle);
 }
 
-export function updateTask(id: string, card: any) {
-   return axios.put(`/tasks/${id}`, card);
+export function updateTask(id: string, card: ICard) {
+   return api.put(`/tasks/${id}`, card);
 }
 
 //DELETE
 
 export function deleteGroup(id: string) {
-   return axios.delete(`/groups/${id}`)
+   return api.delete(`/groups/${id}`)
 }
 
 export function deleteTask(id: string) {
-   return axios.delete(`/tasks/${id}`)
+   return api.delete(`/tasks/${id}`)
 }
