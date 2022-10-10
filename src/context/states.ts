@@ -6,11 +6,9 @@ export type GroupState = {
     cards: ICard[];
 };
 
-export const InitialState: GroupState = {
-    id: "",
-    title: "",
-    cards: [],
-}
+export const InitialState: GroupState[] = [{
+  id: "", title: "", cards: [],
+}]
 
   
   

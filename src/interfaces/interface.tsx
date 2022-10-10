@@ -5,8 +5,11 @@ export interface ICard {
     state: string;
 }
 
+
+
 export interface IGroup {
     id: string;
     title: string;
     cards: ICard[];
 }
+
