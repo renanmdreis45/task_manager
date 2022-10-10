@@ -94,7 +94,7 @@ function Group(props: GroupProps) {
                   <MoreHorizontal />
                   {showDropdown && (
                     <Dropdown
-                      class="group-dropdown"
+                      className="group-dropdown"
                       onClose={() => setShowDropdown(false)}
                     >
                       <p onClick={() => removeGroup(group?.id)}>Deletar Grupo</p>
@@ -106,11 +106,11 @@ function Group(props: GroupProps) {
             <div className="group-cards">
                 {group.cards.map((item) => (
                     <Card 
-                    key={item.id}
-                    card={item}
-                    groupId = {group.id}
-                    removeCard = {removeCard}
-                    updateCard = {updateCards}
+                      key={item.id}
+                      card={item}
+                      groupId = {group.id}
+                      removeCard = {removeCard}
+                      updateCard = {updateCards}
                     />
                 ))}
                 <button className="btn btn-primary"
@@ -119,8 +119,7 @@ function Group(props: GroupProps) {
                     Adicionar Card
                 </button>
             </div>
-            {showModal && (
-                      <Modal onHide={closeModal}>
+                    <Modal show = {showModal} onHide={closeModal}>
                       <Modal.Header closeButton>
                         <Modal.Title>Novo cartão</Modal.Title>
                       </Modal.Header>
@@ -164,7 +163,6 @@ function Group(props: GroupProps) {
                         </Button>
                       </Modal.Footer>
                     </Modal>
-            )}
         </div>
     )
 }
