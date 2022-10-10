@@ -1,10 +1,10 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import { ExitStatus } from 'typescript';
 import { ICard , IGroup} from '../../interfaces/interface';
+import {getCards} from '../../services/requests'
+import {data} from '../../Actions/data'
 import Card from "../Cards/Card";
 import CustomInput from '../UI/CustomInput/CustomInput';
-import { GroupProvider } from '../../context/group/Provider';
-import { GroupContext } from '../../context/group/Context';
 
 
 export interface GroupProps {
@@ -17,10 +17,25 @@ export interface GroupProps {
 function Group(props: GroupProps) {
 
     const {group, addCard, removeCard, updateCard} = props;
+    const [cards, setCards] = useState({})
     const [dropDown, setDropDown] = useState(false);
 
+    async function getCards() {
+        const cards = await getCards();
+        
+        const groupData = data.groups.find((item: any) => item.id === "1");
+
+        groupData.cards = cards.data;
+
+        setCards(groupData.cards);
+        
+    }
+
+    useEffect(() => {
+        getCards();
+    }, [setCards])
+
     return(
-      <GroupProvider>
         <div className="group">
             <div className="group-header">
                 <p className='group-header-title'>
@@ -47,7 +62,6 @@ function Group(props: GroupProps) {
                 />
             </div>
         </div>
-      </GroupProvider>
     )
 }
 
