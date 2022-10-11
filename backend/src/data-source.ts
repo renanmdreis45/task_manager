@@ -13,8 +13,8 @@ const AppDataSource = new DataSource({
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
-    entities: [Group,Task],
-    migrations: [`${__dirname}/**/migrations/*.{ts,js}`],
+    entities: [`${__dirname}/entities/**/*{.js,.ts}`],
+    migrations: [`${__dirname}/migrations/**/*{.ts,.js}`],
     synchronize: true,
 })
 

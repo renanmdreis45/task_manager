@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn} from "typeorm";
+import {v4 as uuid} from "uuid";
 import {Group} from "./group";
 
 @Entity({ name: "Tasks" })
@@ -24,4 +25,9 @@ export class Task {
   })
   group: Group
 
+  constructor() {
+    if(!this.id) {
+      this.id = uuid()
+    }
+  }
 }
