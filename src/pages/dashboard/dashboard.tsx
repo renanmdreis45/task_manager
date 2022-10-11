@@ -3,7 +3,7 @@ import Group from "../../components/Groups/Group"
 import "./dashboard.css";
 import CustomInput from "../../components/UI/CustomInput/CustomInput";
 import { ICard, IGroup } from '../../interfaces/interface'
-import { createGroup, deleteGroup, getGroup, getGroups, createTask, updateTask, deleteTask} from "../../services/requests";
+import { createGroup, deleteGroup, getGroup, getGroups, updateGroup, createTask, updateTask, deleteTask, getCards} from "../../services/requests";
 
 
 function Dashboard() {
@@ -35,15 +35,34 @@ function Dashboard() {
       setGroups(tempGroupsList);
    }
 
+   async function updateGroupHandler(groupId: string, title: string) {
+    await updateGroup(groupId, title);
+   }
+
+   async function updateGroup(groupId: string, newTitle: string) {
+
+    const groupIndex = groups.findIndex((item: IGroup) => item.id === groupId);
+    if(groupIndex < 0) return;
+
+    const tempGroupsList = [...groups];
+    const group = tempGroupsList[groupIndex];
+    group.title = newTitle;
+    
+    updateGroupHandler(String(groupIndex), group.title)
+    setGroups(tempGroupsList);
+ }
    async function removeGroup(groupId: string) {
-      await deleteGroup(groupId);
 
       const groupIndex = groups.findIndex((item: IGroup) => item.id === groupId);
       if(groupIndex < 0) return;
 
+      groups.splice(groupIndex, 1);
       const tempGroupsList = [...groups];
       setGroups(tempGroupsList)
+      deleteGroup(String(groupIndex));
    }
+
+
   
   async function createCardHandler(card: ICard) {
     await createTask(card);
@@ -117,6 +136,7 @@ function Dashboard() {
               group={item}
               addCard={addCardHandler}
               removeGroup={() => removeGroup(item.id)}
+              updateGroup={() => updateGroup(item.id, item.title)}
               removeCard={removeCard}
               updateCards={updateCard}
             />

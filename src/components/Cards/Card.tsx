@@ -4,7 +4,8 @@ import CardInfo from "../Cards/CardInfo/CardInfo";
 import {Clock} from "react-feather";
 import {formatDate} from "../../util/date"
 import {ICard} from "../../interfaces/interface";
-import Dropdown from '../UI/Dropdown/Dropdown';
+import Dropdown from "../UI/Dropdown/Dropdown";
+
 
 interface CardProps {
   card: ICard;

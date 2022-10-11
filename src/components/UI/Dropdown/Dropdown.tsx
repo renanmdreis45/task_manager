@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+
 import "./Dropdown.css";
 
 function Dropdown(props: any) {
@@ -24,7 +25,7 @@ function Dropdown(props: any) {
   return (
     <div
       ref={dropdownRef}
-      className={`dropdown ${props.class ? props.class : ""}`}
+      className={`dropdown custom-scroll ${props.class ? props.class : ""}`}
     >
       {props.children}
     </div>

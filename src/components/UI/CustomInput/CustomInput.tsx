@@ -56,12 +56,12 @@ function CustomInput(props: CustomInputProps) {
                 </div>
             </form>
         ) : (
-          <p
+          <button
             className={`custom-input-display ${displayClass ? displayClass : ""}`}
             onClick={() => setIsCustomInput(true)}
           >
             {text}
-          </p>
+          </button>
         )}
       </div>
     )
