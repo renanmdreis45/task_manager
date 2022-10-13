@@ -4,6 +4,7 @@ import "./Group.css";
 import { ExitStatus } from 'typescript';
 import { ICard, IGroup } from '../../interfaces/interface';
 import { createTask, getCards, updateTask, deleteTask, updateGroup } from '../../services/requests';
+import CustomInput from '../UI/CustomInput/CustomInput';
 import Card from "../Cards/Card";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -12,7 +13,7 @@ import Modal from 'react-bootstrap/Modal';
 
 export interface GroupProps {
   group: IGroup;
-  addCard: (groupId: string, card: ICard) => void;
+  addCard: (groupId: string, desc: string, prazo: string, status: string) => void;
   removeGroup: (groupId: string) => void;
   updateGroup: (groupId: string, title: string) => void;
   removeCard: (groupId: string, cardId: string) => void;
@@ -21,7 +22,7 @@ export interface GroupProps {
 
 function Group(props: GroupProps) {
 
-  const { group, addCard, removeCard, updateCards, removeGroup } = props;
+  const { group, addCard, removeCard, updateCards, removeGroup, updateGroup } = props;
   const [showModalCard, setShowModalCard] = useState(false);
   const [showModalGroup, setShowModalGroup] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -50,21 +51,21 @@ function Group(props: GroupProps) {
     const newDescricao = e.target.value;
 
     setDesc(newDescricao);
-    card.desc = desc;
+    card.desc = newDescricao;
   }
 
   const handlePrazo = (e: any) => {
     const newPrazo = e.target.value;
 
     setPrazo(newPrazo);
-    card.prazo = prazo;
+    card.prazo = newPrazo;
   }
 
   const handleStatus = (e: any) => {
     const newStatus = e.target.value;
 
     setStatus(newStatus);
-    card.state = status;
+    card.state = newStatus;
   }
 
   const openModalGroup = () => {
@@ -200,7 +201,7 @@ function Group(props: GroupProps) {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={closeModalCard} onSubmit={() => addCard(group?.id, card)}>
+          <Button variant="primary" onClick={closeModalCard} onSubmit={() => addCard(group?.id, card?.desc, card?.prazo, card?.state)}>
             Adicionar Card
           </Button>
         </Modal.Footer>

@@ -68,7 +68,7 @@ function Dashboard() {
     await createTask(card);
   }
 
-  const addCard = (groupId: string, card: ICard) => {
+  const addCard = (groupId: string, descricao: string, prazo: string, status: string) => {
       const groupIndex = groups.findIndex((item: IGroup) => item.id === groupId);
 
       if(groupIndex < 0) return;
@@ -76,10 +76,10 @@ function Dashboard() {
       const tempGroupsList = [...groups];
 
       const newCard = {
-        id:card.id,
-        desc: card.desc,
-        prazo: card.prazo,
-        state: card.state,
+        id: String(Date.now() + Math.random() * 2),
+        desc: descricao,
+        prazo: prazo,
+        state: status,
       }
 
       tempGroupsList[groupIndex].cards.push(newCard)
@@ -134,7 +134,7 @@ function Dashboard() {
             <Group
               key={item.id}
               group={item}
-              addCard={() => addCard}
+              addCard={addCard}
               removeGroup={() => removeGroup(item.id)}
               updateGroup={() => updateGroup(item.id, item.title)}
               removeCard={removeCard}
@@ -150,6 +150,7 @@ function Dashboard() {
               buttonText="Adicionar grupo"
               onSubmit={addGroupHandler}
             />
+            
           </div>
         </div>
       </div>
