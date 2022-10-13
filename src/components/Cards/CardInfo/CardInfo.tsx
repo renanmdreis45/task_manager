@@ -1,4 +1,4 @@
-import React,  { useCallback, useEffect, useState } from "react";
+import React,  { useEffect, useState } from "react";
 import { List, Calendar, Clock} from "react-feather";
 import { Modal, Form, Button } from "react-bootstrap";
 import { updateTask } from "../../../services/requests";
@@ -34,11 +34,7 @@ function CardInfo(props: CardioInfoProps) {
         setCardValues({ ...cardValues, state: e.target.value })
     }
 
-    const editCard = useCallback(() => {
-        if(updateCard) {
-            updateCard(groupId, cardValues.id, cardValues)
-        }
-    }, [cardValues])
+
 
 
     return (
@@ -80,7 +76,7 @@ function CardInfo(props: CardioInfoProps) {
               />
             </Form.Group>
           </Form>
-          <Button variant="primary" autoFocus onClick={editCard}>
+          <Button variant="primary" autoFocus onClick={() => updateCard(groupId, cardValues.id, cardValues)}>
             Salvar alterações
           </Button>
         </Modal.Body>
