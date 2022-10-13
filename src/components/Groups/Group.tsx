@@ -22,7 +22,7 @@ export interface GroupProps {
 
 function Group(props: GroupProps) {
 
-  const { group, addCard, removeCard, updateCards, removeGroup, updateGroup } = props;
+  const { group, addCard, updateCards, removeGroup, updateGroup, removeCard} = props;
   const [showModalCard, setShowModalCard] = useState(false);
   const [showModalGroup, setShowModalGroup] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -143,8 +143,8 @@ function Group(props: GroupProps) {
             key={item.id}
             card={item}
             groupId={group.id}
-            removeCard={removeCard}
             updateCard={updateCards}
+            removeCard={removeCard}
           />
         ))}
 

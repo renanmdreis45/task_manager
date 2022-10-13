@@ -69,3 +69,9 @@
     align-items: center;
     justify-content: center;
   }
+
+  .edit {
+    outline: none;
+    border: none;
+    background-color: #fff;;
+  }
