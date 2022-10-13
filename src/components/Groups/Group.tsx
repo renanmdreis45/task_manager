@@ -32,40 +32,29 @@ function Group(props: GroupProps) {
   const [prazo, setPrazo] = useState("")
   const [status, setStatus] = useState("");
 
-  const card: ICard = {
-    id: String(Date.now() + Math.random()),
-    desc: "",
-    prazo: "",
-    state: "",
-  }
 
   const handleTitle = (e: any) => {
     const newTitle = e.target.value;
 
     setTitle(newTitle);
-    group.title = newTitle;
+    group.title = title;
   }
 
 
   const handleDescricao = (e: any) => {
-    const newDescricao = e.target.value;
-
-    setDesc(newDescricao);
-    card.desc = newDescricao;
+    setDesc(e.target.value);
+    console.log(desc);
   }
 
-  const handlePrazo = (e: any) => {
-    const newPrazo = e.target.value;
 
-    setPrazo(newPrazo);
-    card.prazo = newPrazo;
+  const handlePrazo = (e: any) => {
+    setPrazo(e.target.value);
+    console.log(prazo);
   }
 
   const handleStatus = (e: any) => {
-    const newStatus = e.target.value;
-
-    setStatus(newStatus);
-    card.state = newStatus;
+    setStatus(e.target.value);
+    console.log(status);
   }
 
   const openModalGroup = () => {
@@ -95,8 +84,11 @@ function Group(props: GroupProps) {
 
   const handleSubmitCard = (e: any) => {
     e.preventDefault();
+
+    setDesc("")
+    setPrazo("")
+    setStatus("")
     clearFields(e);
-    console.log(card);
   }
 
   function clearFields(event: any) {
@@ -146,7 +138,7 @@ function Group(props: GroupProps) {
         </div>
       </div>
       <div className="group-cards">
-        {group.cards.map((item) => (
+        {group?.cards?.map((item) => (
           <Card
             key={item.id}
             card={item}
@@ -155,25 +147,25 @@ function Group(props: GroupProps) {
             updateCard={updateCards}
           />
         ))}
+
         <button className="board-add-card"
           onClick={openModalCard}
         >
           Adicionar Card
         </button>
-      </div>
-      <Modal show={showModalCard} onHide={closeModalCard}>
+
+        <Modal show={showModalCard} onHide={closeModalCard}>
         <Modal.Header closeButton>
           <Modal.Title>Novo cartão</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmitCard}>
+          <Form>
             <Form.Group className="mb-3" controlId="descricao">
               <Form.Label>Descrição do card</Form.Label>
               <Form.Control
                 type="desc"
                 placeholder="Insira a descrição do cartão"
                 onChange={handleDescricao}
-                autoFocus
               />
             </Form.Group>
             <Form.Group
@@ -201,11 +193,12 @@ function Group(props: GroupProps) {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={closeModalCard} onSubmit={() => addCard(group?.id, card?.desc, card?.prazo, card?.state)}>
+          <Button variant="primary" autoFocus onClick={() => addCard(group?.id, desc, prazo, status)}>
             Adicionar Card
           </Button>
         </Modal.Footer>
       </Modal>
+      </div>
     </div>
   )
 }

@@ -61,7 +61,7 @@ function CardInfo(props: CardioInfoProps) {
                     <Calendar />
                     <p>Prazo</p>
                 </div>
-[                <CustomInput
+                <CustomInput
                     defaultValue={cardValues.prazo}
                     text={cardValues.prazo || "Adicione um prazo"}
                     placeholder="Insira o prazo do card"
@@ -74,7 +74,7 @@ function CardInfo(props: CardioInfoProps) {
                     <Clock />
                     <p>Status</p>
                 </div>
-[                <CustomInput
+                <CustomInput
                     defaultValue={cardValues.state}
                     text={cardValues.state || "Adicione o status do card"}
                     placeholder="Insira o status do card"

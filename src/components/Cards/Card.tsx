@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Card.css";
 import CardInfo from "../Cards/CardInfo/CardInfo";
-import {Clock} from "react-feather";
+import {Clock, MoreHorizontal, AlignLeft} from "react-feather";
 import {formatDate} from "../../util/date"
 import {ICard} from "../../interfaces/interface";
 import Dropdown from "../UI/Dropdown/Dropdown";
@@ -23,30 +23,29 @@ function Card(props: CardProps) {
 
     return (
         <>
-            {showModal && 
+            {showModal && (
                 <CardInfo
                     onClose = {() => setShowModal(false)}
                     card = {card}
                     groupId = {groupId}
                     updateCard={updateCard}
                 />
-            }
-
+            )}         
             <div
                 key={card.id}
                 className="card"
                 onClick = {() => setShowModal(true)} 
-            >
-                <div className="card-header-desc">
-                    <p>{desc}</p>
-                </div>
+            >             
+              <div className="card-top">
+                <div className="card-title"> <AlignLeft /> Tarefa: {desc} </div>
                 <div
-                  className="card-header-dropdown"
+                  className="card-top-more"
                   onClick={(event) => {
                     event.stopPropagation();
                     setShowDropdown(true);
                   }}
                 >
+                    <MoreHorizontal />
                     {showDropdown && (
                         <Dropdown
                           class="group-dropdown"
@@ -56,16 +55,17 @@ function Card(props: CardProps) {
                         </Dropdown>
                     )}
                 </div>
-                <div>{state}</div>
-                <div className="card-footer">
+              </div>
+              <div className="card-title">Status: {state}</div>            
+              <div className="card-footer">
                     {prazo && (
-                        <p className="card-footer item">
+                        <p className="card-footer-item">
+                          Prazo:
                             <Clock className="card-footer-icon" />
-                                {formatDate(prazo)}
+                                 {formatDate(prazo)}
                         </p>
                     )}
-                </div>
-
+              </div>
             </div>
         </>
     )

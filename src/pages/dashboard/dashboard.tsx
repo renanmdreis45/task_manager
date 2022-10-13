@@ -74,6 +74,8 @@ function Dashboard() {
       if(groupIndex < 0) return;
 
       const tempGroupsList = [...groups];
+      
+      const tempCardsList = tempGroupsList[groupIndex].cards;
 
       const newCard = {
         id: String(Date.now() + Math.random() * 2),
@@ -82,7 +84,7 @@ function Dashboard() {
         state: status,
       }
 
-      tempGroupsList[groupIndex].cards.push(newCard)
+      tempCardsList.push(newCard)
       addCardHandler(newCard);
       setGroups(tempGroupsList);
   }
