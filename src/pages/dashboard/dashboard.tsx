@@ -64,11 +64,11 @@ function Dashboard() {
 
 
   
-  async function createCardHandler(card: ICard) {
+  async function addCardHandler(card: ICard) {
     await createTask(card);
   }
 
-  const addCardHandler = (groupId: string, card: ICard) => {
+  const addCard = (groupId: string, card: ICard) => {
       const groupIndex = groups.findIndex((item: IGroup) => item.id === groupId);
 
       if(groupIndex < 0) return;
@@ -83,7 +83,7 @@ function Dashboard() {
       }
 
       tempGroupsList[groupIndex].cards.push(newCard)
-      createCardHandler(newCard);
+      addCardHandler(newCard);
       setGroups(tempGroupsList);
   }
 
@@ -109,13 +109,13 @@ function Dashboard() {
   }
 
   const updateCard = (groupId: string, cardId: string, card: ICard) => {
-    const groupIndex = groups.findIndex((item) => item.id === groupId);
+    const groupIndex = groups.findIndex((item: any) => item.id === groupId);
     if(groupIndex < 0) return;
 
     const tempGroupsList = [...groups];
     const cards = tempGroupsList[groupIndex].cards;
 
-    const cardIndex = cards.findIndex((item) => item.id === cardId);
+    const cardIndex = cards.findIndex((item: any) => item.id === cardId);
     if(cardIndex < 0) return;
 
     tempGroupsList[groupIndex].cards[cardIndex] = card; 
@@ -130,11 +130,11 @@ function Dashboard() {
       </div>
       <div className="app-boards-container">
         <div className="app-boards">
-          {groups.map((item) => (
+          {groups.map((item: any) => (
             <Group
               key={item.id}
               group={item}
-              addCard={addCardHandler}
+              addCard={() => addCard}
               removeGroup={() => removeGroup(item.id)}
               updateGroup={() => updateGroup(item.id, item.title)}
               removeCard={removeCard}

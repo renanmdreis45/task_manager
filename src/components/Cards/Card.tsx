@@ -43,6 +43,7 @@ function Card(props: CardProps) {
                 <div
                   className="card-header-dropdown"
                   onClick={(event) => {
+                    event.stopPropagation();
                     setShowDropdown(true);
                   }}
                 >
