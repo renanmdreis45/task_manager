@@ -35,8 +35,6 @@ function CardInfo(props: CardioInfoProps) {
     }
 
 
-
-
     return (
       <>
         <Modal show={true} onHide={onClose}>
