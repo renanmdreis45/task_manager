@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn } f
 import {v4 as uuid} from "uuid";
 import {Task} from './tasks'
 
-@Entity({ name: "Groups" })
+@Entity("Groups")
 export class Group {
   @PrimaryGeneratedColumn()
   id: string;
@@ -13,7 +13,7 @@ export class Group {
   @CreateDateColumn()
   created_at: Date;
   
-  @OneToMany(() => Task, (task) => task.group)
+  @OneToMany(() => Task, task => task.group)
   tasks: Task[]
 
   constructor() {

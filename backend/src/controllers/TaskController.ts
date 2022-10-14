@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { groupRepository } from '../repositories/groupRepository'
 import { taskRepository } from '../repositories/taskRepository'
 
+
 export class TaskController {
 
     async getTasks(req: Request, res: Response) {
@@ -58,8 +59,9 @@ export class TaskController {
                 desc,
                 state,
                 prazo,
-                group: groupTask,
             })
+
+
 
             await taskRepository.save(newTask)
 

@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn} from "typeorm";
 import {v4 as uuid} from "uuid";
 import {Group} from "./group";
 
-@Entity({ name: "Tasks" })
+@Entity("Tasks")
 export class Task {
   @PrimaryGeneratedColumn()
   id: string;
@@ -11,18 +11,22 @@ export class Task {
   desc: string;
 
   @Column({type: 'text'})
-  state: string;
+  prazo: string;
 
   @Column({type: 'text'})
-  prazo: string;
+  state: string;
 
   @CreateDateColumn()
   created_at: Date;
+
+  @Column()
+  group_id: string;
 
   @ManyToOne(() => Group, group => group.tasks, {
     eager: true,
     onDelete: "CASCADE"
   })
+  @JoinColumn({name: "group_id"})
   group: Group
 
   constructor() {
