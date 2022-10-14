@@ -2,14 +2,14 @@ import {Router} from 'express'
 
 import { CreateGroupController } from '../controllers/group/CreateGroupController';
 import { GetAllGroupsController } from '../controllers/group/GetAllGroupsController';
-import { DeleteGroupController } from '../controllers/group/DeleteGroupController';
 import { UpdateGroupController } from '../controllers/group/UpdateGroupController';
-import { CreateTaskController } from '../controllers/tasks/CreateTaskController';
+import { DeleteGroupController } from '../controllers/group/DeleteGroupController';
 
-import { GetTasksService } from '../Services/task/GetTasksService';
-import { UpdateTaskService } from '../Services/task/UpdateTaskService';
-import { UpdateTaskController } from '../controllers/tasks/UpdateTaskController';
+
+
+import { CreateTaskController } from '../controllers/tasks/CreateTaskController';
 import { GetTasksController } from '../controllers/tasks/GetTasksController';
+import { UpdateTaskController } from '../controllers/tasks/UpdateTaskController';
 import { DeleteTaskController } from '../controllers/tasks/DeleteTaskController';
 
 

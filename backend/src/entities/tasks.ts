@@ -16,11 +16,11 @@ export class Task {
   @Column({type: 'text'})
   state: string;
 
+  @Column({nullable: true})
+  group_id: string;
+
   @CreateDateColumn()
   created_at: Date;
-
-  @Column()
-  group_id: string;
 
   @ManyToOne(() => Group, group => group.tasks, {
     eager: true,
