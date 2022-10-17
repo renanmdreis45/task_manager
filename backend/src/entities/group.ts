@@ -7,7 +7,7 @@ export class Group {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column({type: 'text'})
+  @Column()
   title: string;
 
   @CreateDateColumn()

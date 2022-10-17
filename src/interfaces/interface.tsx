@@ -3,6 +3,7 @@ export interface ICard {
     desc: string;
     prazo: string;
     state: string;
+    group_id : string;
 }
 
 

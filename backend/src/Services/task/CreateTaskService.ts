@@ -13,7 +13,11 @@ type TaskRequest = {
 
 export class CreateTaskService {
     async execute({desc, prazo, state, group_id}: TaskRequest): Promise <Task | Error> {
-        if(!await groupRepository.findOneBy({id: group_id})) {
+        if(!await groupRepository.findOne({
+            where: {
+                id: group_id
+            },
+        })) {
             return new Error("Grupo não existe");
         }
 

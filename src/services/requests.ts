@@ -1,4 +1,5 @@
 import axios from "axios";
+import { RandomUUIDOptions } from "crypto";
 import { ICard, IGroup } from "../interfaces/interface";
 
 const api = axios.create({
@@ -18,6 +19,7 @@ export function createTask(card: any) {
 
 export function getGroups(): Promise<IGroup[]> {
    return api.get("/groups")
+             .then(response => response.data)
 }
 
 export function getGroup(id: string) {
@@ -26,6 +28,7 @@ export function getGroup(id: string) {
 
 export const getCards = () => {
    return api.get('/tasks')
+             .then(response => response.data)
 }
 
 export function getCard(id: string) {

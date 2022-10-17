@@ -7,16 +7,16 @@ export class Task {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column({type: 'text'})
+  @Column()
   desc: string;
 
-  @Column({type: 'text'})
+  @Column()
   prazo: string;
 
-  @Column({type: 'text'})
+  @Column()
   state: string;
 
-  @Column({nullable: true})
+  @Column()
   group_id: string;
 
   @CreateDateColumn()

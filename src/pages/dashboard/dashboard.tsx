@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useContext} from "react";
 import Group from "../../components/Groups/Group"
+import uuid from 'react-uuid';
 import "./dashboard.css";
 import CustomInput from "../../components/UI/CustomInput/CustomInput";
 import { ICard, IGroup } from '../../interfaces/interface'
-import { createGroup, deleteGroup, getGroup, getGroups, updateGroup, createTask, updateTask, deleteTask, getCards} from "../../services/requests";
+import { createGroup, deleteGroup, getGroups, updateGroup, createTask, updateTask, deleteTask, getCards} from "../../services/requests";
 
 
 function Dashboard() {
@@ -15,7 +16,7 @@ function Dashboard() {
    }, []);
   
    async function fetchData() {
-    const groups: IGroup[] = await getGroups();
+    const groups: IGroup[] = await getGroups()
     setGroups(groups);
    }
 
@@ -26,7 +27,7 @@ function Dashboard() {
    const addGroupHandler = (title: string) => {
       const tempGroupsList = [...groups];
       const newGroup = {
-        id: String(Date.now() + Math.random()*2),
+        id: uuid(),
         title,
         cards: [],
       }
@@ -39,33 +40,47 @@ function Dashboard() {
     await updateGroup(groupId, title);
    }
 
-   async function updateGroup(groupId: string, newTitle: string) {
-
-    const groupIndex = groups.findIndex((item: IGroup) => item.id === groupId);
-    if(groupIndex < 0) return;
-
-    const tempGroupsList = [...groups];
-    const group = tempGroupsList[groupIndex];
-    group.title = newTitle;
+   async function updateGroupTitle(groupId: string, newTitle: string) {
     
-    updateGroupHandler(String(groupIndex), group.title)
-    setGroups(tempGroupsList);
- }
+    let new_title = "";
+
+    const group_list = [...groups];
+
+    group_list.forEach(currentGroup => {
+      if(currentGroup.id === groupId) {
+        currentGroup.title = newTitle;
+        updateGroupHandler(currentGroup.id , currentGroup.title)
+      }
+    })
+
+    const new_groups = [...group_list]
+
+    setGroups(new_groups)
+    
+  }
+    async function deleteGroupHandler(groupId: string) {
+      await deleteGroup(groupId);
+    }
    async function removeGroup(groupId: string) {
+       let group_id = "";
+       
+       groups.filter(group => {
+        if(group.id === groupId)  group_id = group.id;
+      });
 
       const groupIndex = groups.findIndex((item: IGroup) => item.id === groupId);
       if(groupIndex < 0) return;
-
+      
+      deleteGroupHandler(group_id);
       groups.splice(groupIndex, 1);
-      const tempGroupsList = [...groups];
-      setGroups(tempGroupsList)
-      deleteGroup(String(groupIndex));
+      fetchData();
    }
 
 
   
   async function addCardHandler(card: ICard) {
     await createTask(card);
+    getCards();
   }
 
   const addCard = (groupId: string, descricao: string, prazo: string, status: string) => {
@@ -78,10 +93,11 @@ function Dashboard() {
       const tempCardsList = tempGroupsList[groupIndex].cards;
 
       const newCard = {
-        id: String(Date.now() + Math.random() * 2),
+        id: uuid(),
         desc: descricao,
         prazo: prazo,
         state: status,
+        group_id: String(groupIndex),
       }
 
       tempCardsList.push(newCard)
@@ -91,6 +107,7 @@ function Dashboard() {
 
   async function removeCardHandler(cardId: string) {
     await deleteTask(cardId);
+    getCards();
   }
 
   const removeCard = (groupId: string, cardId: string) => {
@@ -101,13 +118,14 @@ function Dashboard() {
       const cards = tempGroupsList[groupIndex].cards;
 
       const cardIndex = cards.findIndex((item: ICard) => item.id === cardId);
-      cards.splice(cardIndex, 1);
       removeCardHandler(String(cardIndex));
+      cards.splice(cardIndex, 1);
       setGroups(tempGroupsList);
   }
 
   async function updateCardHandler(groupId: string, card: ICard) {
     await updateTask(groupId, card); 
+    getCards();
   }
 
   const updateCard = (groupId: string, cardId: string, card: ICard) => {
@@ -132,17 +150,19 @@ function Dashboard() {
       </div>
       <div className="app-boards-container">
         <div className="app-boards">
-          {groups.map((item: any) => (
-            <Group
-              key={item.id}
-              group={item}
-              addCard={addCard}
-              removeGroup={() => removeGroup(item.id)}
-              updateGroup={() => updateGroup(item.id, item.title)}
-              removeCard={removeCard}
-              updateCards={updateCard}
-            />
-          ))}
+          {groups.map((item: IGroup) => {  
+            return (
+              <Group
+                key={item.id}
+                group={item}
+                addCard={addCard}
+                removeGroup={() => removeGroup(item.id)}
+                updateGroup={() => updateGroupTitle(item.id, item.title)}
+                removeCard={removeCard}
+                updateCards={updateCard}
+              />
+            )
+          })}
           <div className="app-boards-last">
             <CustomInput
               displayClass="app-boards-add-board"

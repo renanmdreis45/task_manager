@@ -10,14 +10,6 @@ type GroupRequest = {
 
 export class CreateGroupService {
     async execute({title}: GroupRequest): Promise<Group | Error> {
-
-        if(await groupRepository.find({
-            where: {
-                title,
-            }
-        })) {
-            return new Error("Grupo já existe");
-        }
         
         const newGroup = groupRepository.create({title})
 

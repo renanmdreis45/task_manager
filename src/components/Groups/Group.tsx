@@ -100,7 +100,7 @@ function Group(props: GroupProps) {
       <div className="group-header">
         <p className='group-header-title'>
           {group.title}
-          <span>({group.cards.length || 0})</span>
+          
         </p>
 
         <div
