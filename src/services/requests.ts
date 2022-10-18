@@ -7,11 +7,11 @@ const api = axios.create({
  });
 
 //POST
-export function createGroup(group: any) {
+export function createGroup(group: IGroup) {
    return api.post("/groups", group)
 }
 
-export function createTask(card: any) {
+export function createTask(card: ICard) {
    return api.post("/tasks", card)
 } 
 
@@ -38,7 +38,10 @@ export function getCard(id: string) {
 //PUT
 
 export function updateGroup(groupId: string, newTitle: string) {
-   return axios.put(`/groups/${groupId}`, newTitle);
+   return api.put(`/groups/${groupId}`, {
+      title: newTitle,
+   })
+   .then()
 }
 
 export function updateTask(id: string, card: ICard) {

@@ -1,10 +1,11 @@
 import { groupRepository } from "../../repositories/groupRepository";
+import { IGroup } from "../../interface/interface";
 import {Group} from "../../entities/group";
 
 
 type GroupUpdateRequest = {
     id: string;
-    title: string;
+    title: string; 
 }
 
 export class UpdateGroupService {

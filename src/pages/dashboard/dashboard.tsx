@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext} from "react";
+import React, { useEffect, useState, useContext, useCallback} from "react";
 import Group from "../../components/Groups/Group"
 import uuid from 'react-uuid';
 import "./dashboard.css";
@@ -7,18 +7,20 @@ import { ICard, IGroup } from '../../interfaces/interface'
 import { createGroup, deleteGroup, getGroups, updateGroup, createTask, updateTask, deleteTask, getCards} from "../../services/requests";
 
 
+
 function Dashboard() {
   
    const [groups, setGroups] = useState<IGroup[]>([]);
   
    useEffect(() => {
-     fetchData()
+     fetchGrupos()
    }, []);
+
   
-   async function fetchData() {
+   const fetchGrupos = useCallback(async () => {
     const groups: IGroup[] = await getGroups()
     setGroups(groups);
-   }
+   },[groups])
 
    async function createGroupHandler(group: IGroup) {
       await createGroup(group);
@@ -36,73 +38,55 @@ function Dashboard() {
       setGroups(tempGroupsList);
    }
 
-   async function updateGroupHandler(groupId: string, title: string) {
-    await updateGroup(groupId, title);
-   }
+  function updateGroupTitle(groupId: string, newTitle: string) {
 
-   async function updateGroupTitle(groupId: string, newTitle: string) {
-    
-    let new_title = "";
-
-    const group_list = [...groups];
-
-    group_list.forEach(currentGroup => {
+    let edit = groups.slice()
+    edit.forEach(currentGroup => {
       if(currentGroup.id === groupId) {
         currentGroup.title = newTitle;
-        updateGroupHandler(currentGroup.id , currentGroup.title)
       }
     })
 
-    const new_groups = [...group_list]
+    console.log(groupId, newTitle);
 
-    setGroups(new_groups)
-    
+    setGroups(edit);
+
+    updateGroup(groupId, newTitle);
   }
+
     async function deleteGroupHandler(groupId: string) {
       await deleteGroup(groupId);
     }
-   async function removeGroup(groupId: string) {
-       let group_id = "";
-       
-       groups.filter(group => {
-        if(group.id === groupId)  group_id = group.id;
-      });
 
+   function removeGroup(groupId: string) {
+  
       const groupIndex = groups.findIndex((item: IGroup) => item.id === groupId);
       if(groupIndex < 0) return;
       
-      deleteGroupHandler(group_id);
+      deleteGroupHandler(groupId);
       groups.splice(groupIndex, 1);
-      fetchData();
+      const newGroups = [...groups];
+      setGroups(newGroups);
    }
 
 
   
   async function addCardHandler(card: ICard) {
     await createTask(card);
-    getCards();
   }
 
-  const addCard = (groupId: string, descricao: string, prazo: string, status: string) => {
-      const groupIndex = groups.findIndex((item: IGroup) => item.id === groupId);
+  const addCard = (descricao: string, prazo: string, status: string, groupId: string) => {
 
-      if(groupIndex < 0) return;
+    const newCard = {
+      id: uuid(), 
+      desc: descricao,
+      prazo: prazo,
+      state: status,
+      group_id: groupId,
+    }
 
-      const tempGroupsList = [...groups];
+    addCardHandler(newCard);
       
-      const tempCardsList = tempGroupsList[groupIndex].cards;
-
-      const newCard = {
-        id: uuid(),
-        desc: descricao,
-        prazo: prazo,
-        state: status,
-        group_id: String(groupIndex),
-      }
-
-      tempCardsList.push(newCard)
-      addCardHandler(newCard);
-      setGroups(tempGroupsList);
   }
 
   async function removeCardHandler(cardId: string) {
@@ -157,9 +141,9 @@ function Dashboard() {
                 group={item}
                 addCard={addCard}
                 removeGroup={() => removeGroup(item.id)}
-                updateGroup={() => updateGroupTitle(item.id, item.title)}
                 removeCard={removeCard}
                 updateCards={updateCard}
+                updateGroupTitle={updateGroupTitle}
               />
             )
           })}
