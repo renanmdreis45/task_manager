@@ -15,7 +15,6 @@ const AppDataSource = new DataSource({
     database: process.env.DB_NAME,
     entities: [`${__dirname}/entities/**/*{.js,.ts}`],
     migrations: [`${__dirname}/migrations/**/*{.ts,.js}`],
-    synchronize: false,
 })
 
 AppDataSource.initialize()

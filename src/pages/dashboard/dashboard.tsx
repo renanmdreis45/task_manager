@@ -22,6 +22,7 @@ function Dashboard() {
     setGroups(groups);
    },[groups])
 
+
    async function createGroupHandler(group: IGroup) {
       await createGroup(group);
    }
@@ -47,8 +48,6 @@ function Dashboard() {
       }
     })
 
-    console.log(groupId, newTitle);
-
     setGroups(edit);
 
     updateGroup(groupId, newTitle);
@@ -69,63 +68,23 @@ function Dashboard() {
       setGroups(newGroups);
    }
 
-
-  
-  async function addCardHandler(card: ICard) {
+   async function createCardHandler(card: ICard) {
     await createTask(card);
-  }
+ }
 
-  const addCard = (descricao: string, prazo: string, status: string, groupId: string) => {
+  function addCardHandler(desc: string, prazo: string, state: string, group_id: string) {
 
-    const newCard = {
-      id: uuid(), 
-      desc: descricao,
-      prazo: prazo,
-      state: status,
-      group_id: groupId,
+    const newCard: ICard = {
+      id: uuid(),
+      desc,
+      prazo,
+      state,
+      group_id,
     }
 
-    addCardHandler(newCard);
-      
+    createCardHandler(newCard);
+    console.log(newCard.group_id);
   }
-
-  async function removeCardHandler(cardId: string) {
-    await deleteTask(cardId);
-    getCards();
-  }
-
-  const removeCard = (groupId: string, cardId: string) => {
-      const groupIndex = groups.findIndex((item: IGroup) => item.id === groupId);
-      if(groupIndex < 0) return;
-      
-      const tempGroupsList = [...groups]
-      const cards = tempGroupsList[groupIndex].cards;
-
-      const cardIndex = cards.findIndex((item: ICard) => item.id === cardId);
-      removeCardHandler(String(cardIndex));
-      cards.splice(cardIndex, 1);
-      setGroups(tempGroupsList);
-  }
-
-  async function updateCardHandler(groupId: string, card: ICard) {
-    await updateTask(groupId, card); 
-    getCards();
-  }
-
-  const updateCard = (groupId: string, cardId: string, card: ICard) => {
-    const groupIndex = groups.findIndex((item: any) => item.id === groupId);
-    if(groupIndex < 0) return;
-
-    const tempGroupsList = [...groups];
-    const cards = tempGroupsList[groupIndex].cards;
-
-    const cardIndex = cards.findIndex((item: any) => item.id === cardId);
-    if(cardIndex < 0) return;
-
-    tempGroupsList[groupIndex].cards[cardIndex] = card; 
-    updateCardHandler(String(groupIndex), tempGroupsList[groupIndex].cards[cardIndex])
-  }
-
 
   return (
     <div className="app">
@@ -139,11 +98,9 @@ function Dashboard() {
               <Group
                 key={item.id}
                 group={item}
-                addCard={addCard}
                 removeGroup={() => removeGroup(item.id)}
-                removeCard={removeCard}
-                updateCards={updateCard}
                 updateGroupTitle={updateGroupTitle}
+                addCard = {addCardHandler}
               />
             )
           })}

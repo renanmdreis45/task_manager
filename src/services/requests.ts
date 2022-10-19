@@ -1,5 +1,4 @@
 import axios from "axios";
-import { RandomUUIDOptions } from "crypto";
 import { ICard, IGroup } from "../interfaces/interface";
 
 const api = axios.create({
@@ -22,18 +21,11 @@ export function getGroups(): Promise<IGroup[]> {
              .then(response => response.data)
 }
 
-export function getGroup(id: string) {
-   return api.get(`/groups/${id}`)
-}
-
-export const getCards = () => {
+export const getCards = (): Promise<ICard[]> => {
    return api.get('/tasks')
              .then(response => response.data)
 }
 
-export function getCard(id: string) {
-   return api.get(`/tasks/${id}`)
-}
 
 //PUT
 
@@ -44,8 +36,13 @@ export function updateGroup(groupId: string, newTitle: string) {
    .then()
 }
 
-export function updateTask(id: string, card: ICard) {
-   return api.put(`/tasks/${id}`, card);
+export function updateTask(cardId: string, newDesc: string, newPrazo: string, newStatus: string) {
+   return api.put(`/tasks/${cardId}`, {
+      desc: newDesc, 
+      prazo: newPrazo,
+      state: newStatus,
+   })
+   .then()
 }
 
 //DELETE

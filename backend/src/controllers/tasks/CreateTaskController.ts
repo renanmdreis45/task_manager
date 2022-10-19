@@ -4,15 +4,15 @@ import { CreateTaskService } from "../../Services/task/CreateTaskService";
 
 export class CreateTaskController {
     async handle(request: Request, response: Response) {
-        const {desc, state, prazo, group_id} = request.body
+        const {desc, prazo, state, group_id} = request.body
 
         const service = new CreateTaskService();
 
         const result = service.execute({
             desc, 
-            state, 
-            prazo, 
-            group_id
+            prazo,
+            state,
+            group_id,
         });
 
         if(result instanceof Error) {

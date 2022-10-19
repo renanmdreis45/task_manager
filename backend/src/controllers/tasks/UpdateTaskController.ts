@@ -9,6 +9,7 @@ export class UpdateTaskController {
         const {desc, prazo, state } = request.body;
 
         const service = new UpdateTaskService();
+        
         const result = await service.execute({id, desc, prazo, state})
 
         if(result instanceof Error) {

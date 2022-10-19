@@ -1,10 +1,8 @@
 import React, { useState, useCallback, useEffect} from 'react';
 import { MoreHorizontal } from "react-feather";
 import "./Group.css";
-import { ExitStatus } from 'typescript';
 import { ICard, IGroup } from '../../interfaces/interface';
 import { createTask, getCards, updateTask, deleteTask, updateGroup} from '../../services/requests';
-import CustomInput from '../UI/CustomInput/CustomInput';
 import Card from "../Cards/Card";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -14,16 +12,14 @@ import uuid from 'react-uuid';
 
 export interface GroupProps {
   group: IGroup;
-  addCard: (desc: string, prazo: string, status: string, group_id: string) => void;
   removeGroup: (groupId: string) => void;
-  removeCard: (groupId: string, cardId: string) => void;
-  updateCards: (groupId: string, cardId: string, card: ICard) => void;
   updateGroupTitle: (groupId: string, title: string) => void;
+  addCard: (desc: string, prazo: string, status: string, groupId: string) => void;
 }
 
 function Group(props: GroupProps) {
 
-  const { group, addCard, updateCards, removeGroup, removeCard, updateGroupTitle} = props;
+  const { group, removeGroup, updateGroupTitle, addCard} = props;
   const [showModalCard, setShowModalCard] = useState(false);
   const [showModalGroup, setShowModalGroup] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -42,35 +38,42 @@ function Group(props: GroupProps) {
   const fetchCards = useCallback(async () => {
     const cards: ICard[] = await getCards();
     setCards(cards);
-    
    },[cards])
 
-
-  const addCardHandler = () => {
-    const newCard = {
-      id: uuid(),
-      desc: desc,
-      prazo: prazo,
-      state: status,
-      group_id: group.id,
-    }
-
-    const tempCardsList = [...cards];
-    tempCardsList.push(newCard);
-
-    createTask(newCard);
-    setCards(tempCardsList);
-
-    
+  
+  const handleAddCard = () => {
+    addCard(desc, prazo, status, group.id);
+    setShowModalCard(false);
   }
 
-  const handleSubmitCard = (e: any) => {
-    e.preventDefault();
+  const updateCardHandler = (cardId: string, newDesc: string, newPrazo: string, newState: string) => {
+    const newCards = cards.map((card) => ({
+      ...card,
+      desc: (card.id === cardId) ? newDesc : card.desc,
+      prazo: (card.id === cardId) ? newPrazo : card.prazo,
+      state: (card.id === cardId) ? newState : card.state,
+    }))
+    
+    console.log(newCards);
+    setCards(newCards);
+    updateTask(cardId, newDesc,  newPrazo, newState )
+  }
+  
+  const removeCardHandler = (cardId: string) => {
+      const cardIndex = cards.findIndex((item: ICard) => item.id === cardId);
+      if(cardIndex < 0) return;
+
+      deleteTask(cardId);
+      cards.splice(cardIndex, 1);
+      const newCards = [...cards];
+      setCards(newCards)
+  }
+  function handleSubmitCard(e: any) {
+    e.preventDefault()
     if (desc === '' || prazo === '' || status === ""){
         return;
     }
     else {
-       addCardHandler();
        setDesc('');
        setPrazo('')
        setStatus('');
@@ -82,7 +85,7 @@ function Group(props: GroupProps) {
 
 
   const handleTitle = (e:any) => {
-      setTitle(e.target.value);
+    setTitle(e.target.value);
   }
 
   const handleDescricao = (e: any) => {
@@ -156,7 +159,7 @@ function Group(props: GroupProps) {
                     <Form.Group className="mb-3" controlId="descricao">
                       <Form.Label>Título do grupo</Form.Label>
                       <Form.Control
-                        type="desc"
+                        type="text"
                         placeholder="Altere o título do grupo"
                         onChange={handleTitle}
                         autoFocus
@@ -176,15 +179,18 @@ function Group(props: GroupProps) {
         </div>
       </div>
       <div className="group-cards">
-        {group?.cards?.map((item) => (
-          <Card
-            key={item.id}
-            card={item}
-            groupId={group.id}
-            updateCard={updateCards}
-            removeCard={removeCard}
-          />
-        ))}
+         {cards.length > 0 && 
+          cards?.map((item) => {
+            return (
+              item.group_id === group.id &&
+              <Card
+                key={item.id}
+                card={item}
+                updateCard={updateCardHandler}
+                removeCard={removeCardHandler}
+              />
+            )
+          })}
 
         <button className="board-add-card"
           onClick={openModalCard}
@@ -197,11 +203,11 @@ function Group(props: GroupProps) {
           <Modal.Title>Novo cartão</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleSubmitCard}>
             <Form.Group className="mb-3" controlId="descricao">
               <Form.Label>Descrição do card</Form.Label>
               <Form.Control
-                type="desc"
+                type="text"
                 placeholder="Insira a descrição do cartão"
                 onChange={handleDescricao}
               />
@@ -212,7 +218,7 @@ function Group(props: GroupProps) {
             >
               <Form.Label> Prazo do card</Form.Label>
               <Form.Control
-                type="prazo"
+                type="text"
                 onChange={handlePrazo}
                 placeholder="Insira o prazo do cartão (dia/mes)"
               />
@@ -223,7 +229,7 @@ function Group(props: GroupProps) {
             >
               <Form.Label> Status do card</Form.Label>
               <Form.Control
-                type="status"
+                type="text"
                 onChange={handleStatus}
                 placeholder="Insira o status do cartão"
               />
@@ -231,7 +237,7 @@ function Group(props: GroupProps) {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" autoFocus onClick={handleSubmitCard}>
+          <Button variant = "primary" autoFocus onClick={handleAddCard}>
             Adicionar Card
           </Button>
         </Modal.Footer>
