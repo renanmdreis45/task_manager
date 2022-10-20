@@ -3,7 +3,7 @@ import React from "react";
 import { ICard, IGroup } from "./types";
 
 export type Action =
-    | {type: 'ADD_GROUP', payload: IGroup}
+    | {type: 'ADD_GROUP', payload: string}
     | {type: 'GET_GROUPS', payload: IGroup[]}
     | {type: 'UPDATE_GROUP', payload: IGroup}
     | {type: 'REMOVE_GROUP', payload: string}
