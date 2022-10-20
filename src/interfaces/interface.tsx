@@ -1,9 +1,11 @@
+import uuid from "react-uuid";
+
 export interface ICard {
     id: string;
     desc: string;
     prazo: string;
     state: string;
-    group_id : string;
+    group_id: string;
 }
 
 

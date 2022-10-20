@@ -1,10 +1,11 @@
+import { type } from "os";
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn } from "typeorm";
 import {v4 as uuid} from "uuid";
 import {Task} from './tasks'
 
 @Entity("Groups")
 export class Group {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()

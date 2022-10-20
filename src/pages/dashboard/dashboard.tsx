@@ -5,13 +5,14 @@ import "./dashboard.css";
 import CustomInput from "../../components/UI/CustomInput/CustomInput";
 import { ICard, IGroup } from '../../interfaces/interface'
 import { createGroup, deleteGroup, getGroups, updateGroup, createTask, updateTask, deleteTask, getCards} from "../../services/requests";
+import { data } from "../../actions/data";
 
 
 
 function Dashboard() {
   
    const [groups, setGroups] = useState<IGroup[]>([]);
-  
+
    useEffect(() => {
      fetchGrupos()
    }, []);
@@ -76,14 +77,13 @@ function Dashboard() {
 
     const newCard: ICard = {
       id: uuid(),
-      desc,
-      prazo,
-      state,
-      group_id,
+      desc: desc,
+      prazo: prazo,
+      state: state,
+      group_id: group_id,
     }
-
+    
     createCardHandler(newCard);
-    console.log(newCard.group_id);
   }
 
   return (

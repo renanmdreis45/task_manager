@@ -33,7 +33,7 @@ function Group(props: GroupProps) {
   
   useEffect(() => {
     fetchCards();
-  })
+  },[])
 
   const fetchCards = useCallback(async () => {
     const cards: ICard[] = await getCards();
@@ -44,6 +44,7 @@ function Group(props: GroupProps) {
   const handleAddCard = () => {
     addCard(desc, prazo, status, group.id);
     setShowModalCard(false);
+    fetchCards()
   }
 
   const updateCardHandler = (cardId: string, newDesc: string, newPrazo: string, newState: string) => {
@@ -56,7 +57,7 @@ function Group(props: GroupProps) {
     
     console.log(newCards);
     setCards(newCards);
-    updateTask(cardId, newDesc,  newPrazo, newState )
+    updateTask(cardId, newDesc,  newPrazo, newState)
   }
   
   const removeCardHandler = (cardId: string) => {
@@ -182,7 +183,7 @@ function Group(props: GroupProps) {
          {cards.length > 0 && 
           cards?.map((item) => {
             return (
-              item.group_id === group.id &&
+              item.group_id === group.id && 
               <Card
                 key={item.id}
                 card={item}

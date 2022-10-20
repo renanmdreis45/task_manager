@@ -4,7 +4,7 @@ import {Group} from "./group";
 
 @Entity("Tasks")
 export class Task {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
