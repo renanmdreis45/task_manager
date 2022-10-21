@@ -5,7 +5,10 @@ import { ICard, IGroup } from "./types";
 export type Action =
     | {type: 'ADD_GROUP', payload: string}
     | {type: 'FETCH_GROUPS', payload: IGroup[]}
-    | {type: 'UPDATE_GROUP', payload: IGroup}
+    | {type: 'UPDATE_GROUP', payload: {
+        groupId: string;
+        title: string;
+    }}
     | {type: 'REMOVE_GROUP', payload: string}
     | {type: 'ADD_CARD', payload: {
         desc: string;
@@ -24,3 +27,4 @@ export type Action =
         groupId: string;
         cardId: string;
     }}
+    | {type: 'GROUP_ERROR', payload: any}

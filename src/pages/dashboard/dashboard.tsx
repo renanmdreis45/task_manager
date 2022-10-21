@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useContext, useCallback} from "react";
-import Group from "../../components/Groups/Group"
+import React, { useEffect, useState, useContext, useCallback, useReducer} from "react";
+import Group from "../../components/Group/Group"
+import { appData, appReducer } from "../../reducer/reducer";
 import uuid from 'react-uuid';
 import "./dashboard.css";
 import CustomInput from "../../components/UI/CustomInput/CustomInput";
@@ -10,8 +11,9 @@ import { data } from "../../actions/data";
 
 
 function Dashboard() {
-  
+
    const [groups, setGroups] = useState<IGroup[]>([]);
+   const [state, dispatch] = useReducer(appReducer, appData);
 
    useEffect(() => {
      fetchGrupos()
@@ -19,9 +21,8 @@ function Dashboard() {
 
   
    const fetchGrupos = useCallback(async () => {
-    const groups: IGroup[] = await getGroups()
-    setGroups(groups);
-   },[groups])
+    state.groups = await getGroups()
+   },[state.groups])
 
 
    async function createGroupHandler(group: IGroup) {
@@ -97,6 +98,7 @@ function Dashboard() {
             return (
               <Group
                 key={item.id}
+                index = {1}
                 group={item}
                 removeGroup={() => removeGroup(item.id)}
                 updateGroupTitle={updateGroupTitle}

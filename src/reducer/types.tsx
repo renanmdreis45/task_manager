@@ -22,6 +22,8 @@ export interface AppStateContextProps {
 
 export interface AppState {
     groups: IGroup[];
+    error: any;
+    loading: boolean;
 }
 
 export const AppStateContext = createContext<AppStateContextProps>(

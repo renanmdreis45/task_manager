@@ -3,11 +3,8 @@ import { findItemIndexById } from "../util/findItemIndexById";
 import { Action } from "./actions";
 import { AppState, IGroup } from "./types";
 
-const appData: AppState = {
-    groups: []
-}
 
-const appReducer = (state: AppState, action: Action): AppState => {
+export const appReducer = (state: AppState, action: Action): AppState => {
     switch(action.type) {
         case 'ADD_GROUP': {
             return {
@@ -28,7 +25,7 @@ const appReducer = (state: AppState, action: Action): AppState => {
         
 
         case 'UPDATE_GROUP':
-            return {...state, groups: state.groups.map((group) => (group.id === action.payload.id) ? {...group, title: action.payload.title} : group)};
+            return {...state, groups: state.groups.map((group) => (group.id === action.payload.groupId) ? {...group, title: action.payload.title} : group)};
         
 
         case 'REMOVE_GROUP':
@@ -54,25 +51,26 @@ const appReducer = (state: AppState, action: Action): AppState => {
         
 
         case 'UPDATE_CARD':
-            const targetIndexUpdate= findItemIndexById(
-                state.groups,
-                action.payload.groupId
-            );
             
-            state.groups[targetIndexUpdate].cards.map((card) => {
-                card.id === action.payload.cardId ? (
-                    {...card, 
-                     desc: action.payload.desc,
-                     prazo: action.payload.prazo,
-                     state: action.payload.state,
-                    }
-                ) :  (card)
-            });
+            const groupsUpdated = state.groups.map((group) => group.id === action.payload.groupId ? ({
+                ...group,
+                cards:group.cards.map(card => card.id === action.payload.cardId ? ({
+                    ...card,
+                    desc: action.payload.desc,
+                    prazo: action.payload.prazo,
+                    state: action.payload.state,                       
+                }) : 
+                (card) )
 
+            }) : 
+            (group) );
+            
             return {
-                ...state,
+                ...state, 
+                groups: groupsUpdated,
             };
-        
+
+
 
         case 'REMOVE_CARD':
             const targetIndexGroup = findItemIndexById(
@@ -103,7 +101,13 @@ const appReducer = (state: AppState, action: Action): AppState => {
                 ...state, 
                 groups: newGroups,
             };
-            
+        
+        
+        case 'GROUP_ERROR':
+            return {
+                ...state,
+                error: action.payload,
+            }
         
         default: {
             return state;
