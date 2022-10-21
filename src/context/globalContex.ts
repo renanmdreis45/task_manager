@@ -1,7 +1,7 @@
 import uuid from "react-uuid";
 import React, { createContext, useReducer } from "react";
-import { AppState, IGroup, ICard } from "../../reducer/types";
-import { appReducer } from "../../reducer/reducer";
+import { AppState, IGroup, ICard } from "../reducer/types";
+import { appReducer } from "../reducer/reducer";
 import axios from "axios";
 
 export const appData: AppState = {
