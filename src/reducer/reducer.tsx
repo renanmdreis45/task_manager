@@ -6,7 +6,7 @@ import { AppState, IGroup } from "./types";
 
 export const appReducer = (state: AppState, action: Action): AppState => {
     switch(action.type) {
-        case 'ADD_GROUP': {
+        case 'addGroup': {
             return {
                 ...state,
                 groups: [
@@ -20,19 +20,19 @@ export const appReducer = (state: AppState, action: Action): AppState => {
             };
         }
 
-        case 'FETCH_GROUPS': 
+        case 'getGroups': 
             return {...state, groups: action.payload}
         
 
-        case 'UPDATE_GROUP':
+        case 'updateGroup':
             return {...state, groups: state.groups.map((group) => (group.id === action.payload.groupId) ? {...group, title: action.payload.title} : group)};
         
 
-        case 'REMOVE_GROUP':
+        case 'removeGroup':
             return {...state, groups: state.groups.filter((group) => group.id !== action.payload)};
         
 
-        case 'ADD_CARD': 
+        case 'addCard': 
             const targetIndexAdd = findItemIndexById(
                 state.groups,
                 action.payload.groupId
@@ -50,7 +50,7 @@ export const appReducer = (state: AppState, action: Action): AppState => {
             };
         
 
-        case 'UPDATE_CARD':
+        case 'updateCard':
             
             const groupsUpdated = state.groups.map((group) => group.id === action.payload.groupId ? ({
                 ...group,
@@ -72,7 +72,7 @@ export const appReducer = (state: AppState, action: Action): AppState => {
 
 
 
-        case 'REMOVE_CARD':
+        case 'removeCard':
             const targetIndexGroup = findItemIndexById(
                 state.groups,
                 action.payload.groupId,

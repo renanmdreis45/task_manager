@@ -14,18 +14,8 @@ export type IGroup = {
     title: string;
     cards:  ICard[]
 }
-
-export interface AppStateContextProps {
-    state: AppState;
-    dispatch: React.Dispatch<Action>;
-}
-
 export interface AppState {
     groups: IGroup[];
     error: any;
     loading: boolean;
 }
-
-export const AppStateContext = createContext<AppStateContextProps>(
-  {} as AppStateContextProps  
-);

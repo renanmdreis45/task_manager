@@ -3,17 +3,16 @@ import React, { createContext, useReducer } from "react";
 import { AppState, IGroup, ICard } from "../reducer/types";
 import { appReducer } from "../reducer/reducer";
 import axios from "axios";
+import { GlobalContext } from "./globalContext";
 
 export const appData: AppState = {
     groups: [],
     error: null,
-    loading: true
+    loading: true,
 }
 
-export const GlobalContext = createContext<AppState | null>(appData);
-
 interface Props {
-    children: JSX.Element;
+    children: JSX.Element | JSX.Element[] 
 }
 
 export const GlobalProvider = ({children}: Props) => {
@@ -30,14 +29,21 @@ export const GlobalProvider = ({children}: Props) => {
             const res = await axios.post('/groups', group, head);
 
             dispatch({
-                type:'ADD_GROUP',
+                type:'addGroup',
                 payload: res.data,
-            })
+            });
+
+        } catch(err: any) {
+            
+            dispatch({
+                type: 'GROUP_ERROR',
+                payload: err.response.data.error
+            });
         }
     }
 
     async function getGroups(groups: IGroup[]) {
-
+    
     }
 
     async function updateGroup(group: IGroup) {
@@ -62,8 +68,17 @@ export const GlobalProvider = ({children}: Props) => {
 
 
     return (
-        <GlobalContext.Provider value={appData}>
+        <GlobalContext.Provider value={{
+            state, 
+            addGroup,
+            getGroups,
+            updateGroup,
+            removeGroup,
+            addCard,
+            updateCard,
+            removeCard
+        }}>
             {children}
         </GlobalContext.Provider>
-    );
+    )
 }
