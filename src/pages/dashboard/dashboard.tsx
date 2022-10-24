@@ -1,91 +1,27 @@
 import React, { useEffect, useState, useContext, useCallback, useReducer} from "react";
 import Group from "../../components/Group/Group"
-import { appData, appReducer } from "../../reducer/reducer";
 import uuid from 'react-uuid';
 import "./dashboard.css";
 import CustomInput from "../../components/UI/CustomInput/CustomInput";
 import { ICard, IGroup } from '../../interfaces/interface'
-import { createGroup, deleteGroup, getGroups, updateGroup, createTask, updateTask, deleteTask, getCards} from "../../services/requests";
 import { data } from "../../actions/data";
+import { GlobalContext } from "../../context/GlobalContext";
 
 
 
 function Dashboard() {
 
-   const [groups, setGroups] = useState<IGroup[]>([]);
-   const [state, dispatch] = useReducer(appReducer, appData);
-
-   useEffect(() => {
-     fetchGrupos()
-   }, []);
-
-  
-   const fetchGrupos = useCallback(async () => {
-    state.groups = await getGroups()
-   },[state.groups])
-
-
-   async function createGroupHandler(group: IGroup) {
-      await createGroup(group);
-   }
+   const {state, getGroups, addGroup, removeGroup} = useContext(GlobalContext);
 
    const addGroupHandler = (title: string) => {
-      const tempGroupsList = [...groups];
-      const newGroup = {
-        id: uuid(),
-        title,
-        cards: [],
-      }
-      createGroupHandler(newGroup);
-      tempGroupsList.push(newGroup)
-      setGroups(tempGroupsList);
+
+      addGroup(title);
    }
 
-  function updateGroupTitle(groupId: string, newTitle: string) {
+   useEffect(() => {
+      getGroups();
+   }, [])
 
-    let edit = groups.slice()
-    edit.forEach(currentGroup => {
-      if(currentGroup.id === groupId) {
-        currentGroup.title = newTitle;
-      }
-    })
-
-    setGroups(edit);
-
-    updateGroup(groupId, newTitle);
-  }
-
-    async function deleteGroupHandler(groupId: string) {
-      await deleteGroup(groupId);
-    }
-
-   function removeGroup(groupId: string) {
-  
-      const groupIndex = groups.findIndex((item: IGroup) => item.id === groupId);
-      if(groupIndex < 0) return;
-      
-      deleteGroupHandler(groupId);
-      groups.splice(groupIndex, 1);
-      const newGroups = [...groups];
-      setGroups(newGroups);
-   }
-
-   async function createCardHandler(card: ICard) {
-    await createTask(card);
- }
-
-  function addCardHandler(desc: string, prazo: string, state: string, group_id: string) {
-
-    const newCard: ICard = {
-      id: uuid(),
-      desc: desc,
-      prazo: prazo,
-      state: state,
-      group_id: group_id,
-    }
-    
-    createCardHandler(newCard);
-  }
 
   return (
     <div className="app">
@@ -94,15 +30,14 @@ function Dashboard() {
       </div>
       <div className="app-boards-container">
         <div className="app-boards">
-          {groups.map((item: IGroup) => {  
+          {state.groups.map((item: IGroup, i: number) => {  
             return (
               <Group
-                key={item.id}
-                index = {1}
+                index = {i}
+                key = {item.id}
                 group={item}
                 removeGroup={() => removeGroup(item.id)}
-                updateGroupTitle={updateGroupTitle}
-                addCard = {addCardHandler}
+                addGroup = {addGroupHandler}
               />
             )
           })}

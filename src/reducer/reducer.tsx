@@ -21,7 +21,11 @@ export const appReducer = (state: AppState, action: Action): AppState => {
         }
 
         case 'getGroups': 
-            return {...state, groups: action.payload}
+            return {
+                ...state,
+                loading: false,
+                groups: action.payload
+            }
         
 
         case 'updateGroup':
@@ -33,20 +37,23 @@ export const appReducer = (state: AppState, action: Action): AppState => {
         
 
         case 'addCard': 
-            const targetIndexAdd = findItemIndexById(
-                state.groups,
-                action.payload.groupId
-            );
-            state.groups[targetIndexAdd].cards.push({
-                id: uuid(),
-                desc: action.payload.desc,
-                prazo: action.payload.prazo,
-                state: action.payload.state,
-                group_id: action.payload.groupId,
-            });
-            
+            const newGroupsCards = state.groups.map((group) => group.id === action.payload.groupId ? ({
+                ...group,
+                cards: [
+                    ...group.cards,
+                    {
+                        id: uuid(),
+                        desc: action.payload.desc,
+                        prazo: action.payload.prazo,
+                        state: action.payload.state,
+                        group_id: action.payload.groupId,
+                    },
+                ],
+            }) : (group))
+
             return {
-                ...state
+                ...state,
+                groups: newGroupsCards,
             };
         
 

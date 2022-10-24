@@ -3,7 +3,7 @@ import { IGroup } from '../../../../reducer/types';
 import { Modal, Form, Button } from 'react-bootstrap';
 
 export interface EditGroupProps {
-    state: IGroup[];
+    newCard(desc: string, prazo: string, status: string): void;
     closeModal(): void;
     showModalCard: boolean;
 }
@@ -14,7 +14,7 @@ export const EditCard = (props: EditGroupProps) => {
     const [prazo, setPrazo] = useState("");
     const [status, setStatus] = useState("");
 
-    const handleSubmitCard = (e) => {
+    const handleEditCard = (e: any) => {
         e.preventDefault();
         newCard(desc, prazo, status)
 
