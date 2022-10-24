@@ -37,7 +37,7 @@ export const appReducer = (state: AppState, action: Action): AppState => {
         
 
         case 'addCard': 
-            const newGroupsCards = state.groups.map((group) => group.id === action.payload.groupId ? ({
+            const newGroupsCards = state.groups.map((group) => group.id === action.payload.group_id ? ({
                 ...group,
                 cards: [
                     ...group.cards,
@@ -46,7 +46,7 @@ export const appReducer = (state: AppState, action: Action): AppState => {
                         desc: action.payload.desc,
                         prazo: action.payload.prazo,
                         state: action.payload.state,
-                        group_id: action.payload.groupId,
+                        group_id: action.payload.group_id,
                     },
                 ],
             }) : (group))

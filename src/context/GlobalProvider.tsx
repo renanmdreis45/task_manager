@@ -106,7 +106,7 @@ export const GlobalProvider = ({children}: Props) => {
 
     async function addCard(desc: string, prazo: string, state: string, group_id: string) {
         try {
-            const res = await api.post('/tasks', {
+            await api.post('/tasks', {
                 desc,
                 prazo,
                 state,
@@ -115,7 +115,12 @@ export const GlobalProvider = ({children}: Props) => {
 
             dispatch({
                 type: 'addCard',
-                payload: res.data
+                payload: {
+                    desc,
+                    prazo,
+                    state,
+                    group_id
+                }
             })
         } catch (err: any) {
             dispatch({

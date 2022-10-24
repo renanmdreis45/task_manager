@@ -14,7 +14,7 @@ export type Action =
         desc: string;
         prazo: string;
         state: string;
-        groupId: string;
+        group_id: string;
       }}
     | {type: 'updateCard', payload: {
         cardId: string;
