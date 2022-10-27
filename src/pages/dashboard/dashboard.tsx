@@ -16,6 +16,7 @@ function Dashboard() {
    const addGroupHandler = (title: string) => {
 
       addGroup(title);
+      console.log(state)
    }
 
    useEffect(() => {

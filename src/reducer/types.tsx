@@ -14,6 +14,7 @@ export type IGroup = {
     title: string;
     cards:  ICard[]
 }
+
 export interface AppState {
     groups: IGroup[];
     error: any;
